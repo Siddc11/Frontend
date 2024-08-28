@@ -3,9 +3,8 @@ import React, { useState } from "react";
 import InputBox from "../../components/Forms/InputBox";
 import SubmitButton from "../../components/Forms/SubmitButton";
 
-const Register = () => {
+const Login = () => {
   //States to handle the data of the input fields
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,13 +14,13 @@ const Register = () => {
   const handleSubmit = () => {
     try {
       setLoading(true);
-      if (!name || !email || !password) {
-        Alert.alert("Please Enter All the Fields");
+      if (!email || !password) {
+        Alert.alert("Email or Password missing!");
         setLoading(false);
         return;
       }
       setLoading(false);
-      console.log("Registered data=> ", { name, email, password });
+      console.log("Registered data=> ", { email, password });
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -30,15 +29,8 @@ const Register = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.pageTitle}>Register</Text>
+      <Text style={styles.pageTitle}>LOGIN</Text>
       <View style={{ marginHorizontal: 20 }}>
-        <InputBox
-          placeholder={"Name"}
-          autoComplete="name"
-          value={name}
-          setValue={setName}
-        />
-
         <InputBox
           placeholder={"Email"}
           keyboardType="email-address"
@@ -55,20 +47,20 @@ const Register = () => {
           setValue={setPassword}
         />
       </View>
-      {/* <Text>{JSON.stringify({ name, email, password }, null, 4)}</Text> */}
+
       <SubmitButton
-        title="Submit"
+        title="Login"
         loading={loading}
         handleSubmit={handleSubmit}
       />
       <Text style={styles.linkText}>
-        Already Registered ? Click👉 <Text style={styles.link}>LOGIN</Text>
+        Not Registered yet ? Click 👉 <Text style={styles.link}>REGISTER</Text>
       </Text>
     </View>
   );
 };
 
-export default Register;
+export default Login;
 
 const styles = StyleSheet.create({
   container: {
