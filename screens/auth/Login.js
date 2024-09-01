@@ -2,8 +2,9 @@ import { StyleSheet, Text, TextInput, View, Alert } from "react-native";
 import React, { useState } from "react";
 import InputBox from "../../components/Forms/InputBox";
 import SubmitButton from "../../components/Forms/SubmitButton";
+import axios from "axios";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   //States to handle the data of the input fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,7 +12,7 @@ const Login = () => {
 
   //function to handle the submit button data
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
       setLoading(true);
       if (!email || !password) {
@@ -20,8 +21,14 @@ const Login = () => {
         return;
       }
       setLoading(false);
-      console.log("Registered data=> ", { email, password });
+      const { data } = await axios.post(
+        "http://192.168.0.102:5000/api/v1/auth/login",
+        { email, password }
+      );
+      alert(data && data.message);
+      console.log("Login data=> ", { email, password });
     } catch (error) {
+      alert(error.response.data.message);
       setLoading(false);
       console.log(error);
     }
@@ -54,7 +61,13 @@ const Login = () => {
         handleSubmit={handleSubmit}
       />
       <Text style={styles.linkText}>
-        Not Registered yet ? Click 👉 <Text style={styles.link}>REGISTER</Text>
+        Not Registered yet ? Click 👉{" "}
+        <Text
+          style={styles.link}
+          onPress={() => navigation.navigate("Register")}
+        >
+          REGISTER
+        </Text>
       </Text>
     </View>
   );

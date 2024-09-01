@@ -2,8 +2,9 @@ import { StyleSheet, Text, TextInput, View, Alert } from "react-native";
 import React, { useState } from "react";
 import InputBox from "../../components/Forms/InputBox";
 import SubmitButton from "../../components/Forms/SubmitButton";
+import axios from "axios";
 
-const Register = () => {
+const Register = ({ navigation }) => {
   //States to handle the data of the input fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ const Register = () => {
 
   //function to handle the submit button data
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
       setLoading(true);
       if (!name || !email || !password) {
@@ -20,10 +21,23 @@ const Register = () => {
         setLoading(false);
         return;
       }
+
+      const response = await axios.post(
+        "http://192.168.0.102:5000/api/v1/auth/register",
+        { name, email, password }
+      );
+
       setLoading(false);
+      Alert.alert(response.data && response.data.message); // Using Alert instead of alert
       console.log("Registered data=> ", { name, email, password });
     } catch (error) {
       setLoading(false);
+      // Improved error handling
+      if (error.response) {
+        Alert.alert(error.response.data.message || "An error occurred");
+      } else {
+        Alert.alert("Network error or server not reachable");
+      }
       console.log(error);
     }
   };
@@ -62,7 +76,10 @@ const Register = () => {
         handleSubmit={handleSubmit}
       />
       <Text style={styles.linkText}>
-        Already Registered ? Click👉 <Text style={styles.link}>LOGIN</Text>
+        Already Registered ? Click👉{" "}
+        <Text style={styles.link} onPress={() => navigation.navigate("Login")}>
+          LOGIN
+        </Text>
       </Text>
     </View>
   );
