@@ -28,7 +28,7 @@ const Register = ({ navigation }) => {
       );
 
       setLoading(false);
-      Alert.alert(response.data && response.data.message); // Using Alert instead of alert
+      Alert.alert(response.data && response.data.message);
       console.log("Registered data=> ", { name, email, password });
     } catch (error) {
       setLoading(false);

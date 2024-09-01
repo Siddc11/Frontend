@@ -5,7 +5,6 @@ import SubmitButton from "../../components/Forms/SubmitButton";
 import axios from "axios";
 
 const Login = ({ navigation }) => {
-  //States to handle the data of the input fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
